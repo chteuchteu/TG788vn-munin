@@ -1,10 +1,13 @@
 # TG788vn-munin
-TG788vn router munin plugin
-
 This project provides munin plugins for the following stats:
 
 - theoretical bandwidth (queried from `xdsl info`)
+
+![tg788vn_bandwidth](doc/tg788vn_bandwidth-day.png)
+
 - traffic (queried from `ip iflist`)
+
+![tg788vn_traffic](doc/tg788vn_traffic-day.png)
 
 ## Installation
 Clone this project on your server:
