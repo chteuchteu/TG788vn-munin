@@ -26,15 +26,15 @@ args = parser.parse_args()
 
 if args.config == 'config':
     if mode == 'tg788vn-bandwidth':
-        print('graph_title XDSL bandwidth')
+        print('graph_title TG788vn XDSL bandwidth')
         print('graph_vlabel bandwidth')
-        print('graph_category router')
+        print('graph_category network')
         print('up.label Up')
         print('down.label Down')
     elif mode == 'tg788vn-traffic':
-        print('graph_title Internet interface stats')
+        print('graph_title TG788vn Internet interface traffic')
         print('graph_vlabel usage')
-        print('graph_category router')
+        print('graph_category network')
         print('up.label Up (B/s)')
         print('up.draw AREA')
         print('down.label Down (B/s)')
