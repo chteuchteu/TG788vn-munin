@@ -4,8 +4,6 @@ import re
 import telnetlib
 import argparse
 import sys
-import os
-import pickle
 
 # Credentials
 HOST = ''
@@ -14,8 +12,6 @@ PSWD = ''
 
 LNRT = '\r\n'
 PRPT = '=>'
-
-IF_LOG_FILE_PATH = '/tmp/TG788vn-munin-traffic.log'
 
 # Mode: either 'tg788vn-bandwidth' or 'tg788vn-traffic', determine by symlink name
 mode = __file__.split('/')[-1]
@@ -92,8 +88,6 @@ elif mode == 'tg788vn-traffic':
     tn.read_until(PRPT)
     tn.write('iflist' + LNRT)
     if_stats = tn.read_until(PRPT)
-    tn.write('exit')
-    tn.close()
 
     # Parse if stats
     # Interface                            Group  MTU   RX         TX         Admin  Oper
@@ -124,33 +118,21 @@ elif mode == 'tg788vn-traffic':
             rx *= units[rx_unit]
             tx *= units[tx_unit]
 
-            # Subtract last saved value
-            last_rx = rx
-            last_tx = tx
+            one_sec_rx = rx / (5 * 60)
+            one_sec_tx = tx / (5 * 60)
 
-            # May not exist on first run
-            if os.path.isfile(IF_LOG_FILE_PATH):
-                with open(IF_LOG_FILE_PATH) as f:
-                    last_rx, last_tx = pickle.load(f)
+            print('up.value {}'.format(str(one_sec_tx)))
+            print('down.value {}'.format(str(one_sec_rx)))
 
-                last_rx = int(last_rx)
-                last_tx = int(last_tx)
+            # Flush stats
+            tn.write('clearifstats' + LNRT)
+            tn.read_until(PRPT)
 
-            # Save current value
-            with open(IF_LOG_FILE_PATH, 'w') as f:
-                pickle.dump([rx, tx], f)
-
-            # Will be 0 on first run, perfect
-            five_minutes_rx = rx - last_rx
-            five_minutes_tx = tx - last_tx
-
-            one_sec_rx = five_minutes_rx / (5 * 60)
-            one_sec_tx = five_minutes_tx / (5 * 60)
-
-            print('up.value ' + str(one_sec_tx))
-            print('down.value ' + str(one_sec_rx))
-
+            tn.write('exit')
+            tn.close()
             sys.exit(0)
 
     # Couldn't find regex match
+    tn.write('exit')
+    tn.close()
     sys.exit(1)
