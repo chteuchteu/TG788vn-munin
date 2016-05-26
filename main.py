@@ -109,10 +109,10 @@ elif mode == 'tg788vn-traffic':
 
             # Handle units
             units = {
-                'KB': 1000,
-                'MB': 1000000,
-                'GB': 1000000000,
-                'TB': 1000000000000
+                'KB': 1024,
+                'MB': 1024**2,
+                'GB': 1024**3,
+                'TB': 1024**4,
             }
 
             rx *= units[rx_unit]
