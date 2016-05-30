@@ -71,17 +71,23 @@ if mode == 'tg788vn-bandwidth':
     # Up time (Days hh:mm:ss):                 0 jours, 1:06:47
     # xDSL Type:                               ADSL2+
     # Bandwidth (Down/Up - kbit/s):            20108/1032
-
+    regex = re.compile('Bandwidth \(Down\/Up - kbit\/s\):\s*(\d*)\/(\d*)')
     for row in xdsl_stats.split('\n'):
-        if ': ' in row:
-            key, value = row.split(': ')
-            if key == 'Bandwidth (Down/Up - kbit/s)':
-                values = value.lstrip().split('/')
+        matches = regex.findall(row)
 
-                print('up.value {}'.format(values[1]))
-                print('down.value {}'.format(values[0]))
+        if len(matches) > 0:
+            matches = matches[0]
+            down = int(matches[0])
+            up = int(matches[1])
 
-                sys.exit(0)
+            # Convert kbit/s to bit/s
+            down *= 1000
+            up *= 1000
+
+            print('up.value {}'.format(up))
+            print('down.value {}'.format(down))
+
+            sys.exit(0)
 
 elif mode == 'tg788vn-traffic':
     tn.write('ip' + LNRT)
