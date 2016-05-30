@@ -20,6 +20,10 @@ modes = ['tg788vn-bandwidth', 'tg788vn-traffic']
 if mode not in modes:
     sys.exit(1)
 
+# Check credentials
+if len(HOST) == 0 or len(USER) == 0 or len(PSWD) == 0:
+    sys.exit(1)
+
 parser = argparse.ArgumentParser()
 parser.add_argument('config', nargs='?')
 args = parser.parse_args()
