@@ -18,10 +18,13 @@ mode = __file__.split('/')[-1]
 modes = ['tg788vn-bandwidth', 'tg788vn-traffic']
 
 if mode not in modes:
+    print('Unknown mode {}.'.format(mode))
+    print('Accepted modes are {}'.format(','.join(modes)))
     sys.exit(1)
 
 # Check credentials
 if len(HOST) == 0 or len(USER) == 0 or len(PSWD) == 0:
+    print('Empty credentials')
     sys.exit(1)
 
 parser = argparse.ArgumentParser()
@@ -93,6 +96,10 @@ if mode == 'tg788vn-bandwidth':
 
             sys.exit(0)
 
+    # Could not find row
+    print('Could not find Bandwidth row in command output.')
+    sys.exit(1)
+
 elif mode == 'tg788vn-traffic':
     tn.write('ip' + LNRT)
     tn.read_until(PRPT)
@@ -145,4 +152,6 @@ elif mode == 'tg788vn-traffic':
     # Couldn't find regex match
     tn.write('exit')
     tn.close()
+
+    print('Could not find Internet row in command output.')
     sys.exit(1)
