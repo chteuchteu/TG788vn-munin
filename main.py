@@ -13,7 +13,7 @@ PSWD = ''
 LNRT = '\r\n'
 PRPT = '=>'
 
-# Mode: either 'tg788vn-bandwidth' or 'tg788vn-traffic', determine by symlink name
+# Mode: either 'tg788vn-bandwidth' or 'tg788vn-traffic', determined by symlink name
 mode = __file__.split('/')[-1]
 modes = ['tg788vn-bandwidth', 'tg788vn-traffic']
 
@@ -45,7 +45,7 @@ if args.config == 'config':
         print('up.label Up (B/s)')
         print('up.draw AREA')
         print('down.label Down (B/s)')
-        print('down.draw STACK')
+        print('down.draw AREA')
 
     sys.exit(0)
 
