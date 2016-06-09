@@ -40,7 +40,7 @@ if args.config == 'config':
         print('down.label Down')
     elif mode == 'tg788vn-traffic':
         print('graph_title TG788vn Internet interface traffic')
-        print('graph_vlabel usage')
+        print('graph_vlabel bits in (-) / out (+) per second')
         print('graph_category network')
         print('up.label Up (B/s)')
         print('up.draw AREA')
@@ -137,6 +137,9 @@ elif mode == 'tg788vn-traffic':
 
             one_sec_rx = rx / (5 * 60)
             one_sec_tx = tx / (5 * 60)
+
+            # Download should be negative (in = -)
+            one_sec_rx *= -1
 
             print('up.value {}'.format(str(one_sec_tx)))
             print('down.value {}'.format(str(one_sec_rx)))
